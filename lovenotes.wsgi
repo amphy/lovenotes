@@ -10,4 +10,4 @@ import sys
 sys.path.insert(0, '/var/www/lovenotes')
 sys.path.append('/var/www/lovenotes')
 
-from hello import app as application
+from lovenotes import app as application
