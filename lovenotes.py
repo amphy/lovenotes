@@ -53,7 +53,7 @@ def shownote(key):
   cursor.execute('SELECT data FROM notes WHERE id=(%s)', [key])
   things = cursor.fetchone()
   things = json.dumps(things)
-  b = json.loads(things)
+  #b = json.loads(str(things[0]))
   print things
   #then sends it to javascript to render on page
   return render_template('submitted.html', name = something)
