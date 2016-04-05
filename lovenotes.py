@@ -32,26 +32,31 @@ def mainpage():
 def submitnote():
   something = str(request.form['keys'])
   #need to store arrays in database
-  data_entry = "{ keys: " + str(request.form['keys']) 
-  data_entry += ", times: " + str(request.form['times']) + "}"
+  data_entry = "{'keys': " + str(request.form['keys']) 
+  data_entry += ", 'times': " + str(request.form['times']) + "}"
   #need to generate a url/random identifier and store with arrays
   keyed = uniqid()
   try:
     cursor.execute('INSERT INTO notes VALUES (%s, %s)', (keyed, data_entry))
   
     mysql_c.commit()
-    return render_template('submitted.html', name=something)
+    #redirect to a new page with identifier
+    return redirect(url_for('shownote', key=keyed))
   except:
    mysql_c.rollback()
-
-   #redirect to a new page with identifier
    return "failed"
 
 @app.route('/note/<key>')
 def shownote(key):
+  something = key
   #this method goes to mysql database and pulls data
+  cursor.execute('SELECT data FROM notes WHERE id=(%s)', [key])
+  things = cursor.fetchone()
+  things = json.dumps(things)
+  b = json.loads(things)
+  print things
   #then sends it to javascript to render on page
-  return "note"
+  return render_template('submitted.html', name = something)
 
 def uniqid(prefix='', more_entropy=False):
   m = time.time()
