@@ -3,7 +3,7 @@
 <head>
 
 <title>Love Notes</title>
-
+<script src="{{ url_for('static', filename='main.js') }}"></script>
 </head>
 
 <body>
@@ -11,9 +11,11 @@
 <center><h1>Love Notes</h1></center>
 <center>
 <form method="post" action="{{ url_for('submitnote') }}">
-<textarea name="letter" cols="100" rows="30"></textarea>
+<textarea name="letter" id="letter" cols="100" rows="30"></textarea>
 <br /><br />
-<input type="submit" value="submit">
+<input type="hidden" id="keys" value="">
+<input type="hidden" id="times" value="">
+<input type="submit" value="submit" id="submit">
 </form>
 </center>
 </body>
