@@ -3,12 +3,14 @@
 <head>
 
 <title>Love Notes</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+<link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='typicons.min.css') }}"  />
 <script src="{{ url_for('static', filename='main.js') }}"></script>
 </head>
 
 <body>
 
-<center><h1>Love Notes</h1></center>
+<center><h1>Love Notes <span class="typcn typcn-heart-full-outline"></span></h1></center>
 <center>
 <form method="post" action="{{ url_for('submitnote') }}">
 <textarea name="letter" id="letter" cols="100" rows="30"></textarea>
