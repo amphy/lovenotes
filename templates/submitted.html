@@ -2,11 +2,53 @@
 
 <head>
 <title>Love Notes</title>
+
+<script type="text/javascript">
+window.addEventListener("load", setup, false);
+ 
+var i = 0;
+var max = 0;
+var letter = null;
+var time_arr = null;
+var keys_arr = null; 
+
+function setup() {
+  var time = "{{ time }}";
+  var keys = "{{ key }}";
+
+  time_arr = time.split(",");
+  keys_arr = keys.split(",");
+
+  letter = document.getElementById("letter");
+  
+  max = keys_arr.length;
+  i = 0;
+
+  typeChar();
+}
+
+  function typeChar() {
+    if(i < keys_arr.length) {
+      var curr = letter.value;
+      if(parseInt(keys_arr[i]) != 8) {
+        letter.value = letter.value + String.fromCharCode(parseInt(keys_arr[i]));
+      } else {
+        letter.value = curr.substring(0, curr.length-1);
+      }
+      i++;
+      setTimeout(typeChar, parseInt(time_arr[i]));
+    }
+  }
+</script>
+
 </head>
 <body>
 Congrats! You submitted. <br /><br />
 What you submitted: {{ name }}
-
+<br /><br />
+<center>
+<textarea id="letter" cols="100" rows="40"></textarea>
+</center>
 </body>
 
 </html>

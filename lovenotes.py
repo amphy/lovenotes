@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flaskext.mysql import MySQL
 from ConfigParser import SafeConfigParser
-import json, string, time, math, random
+import json, string, time, math, random, ast
 
 app = Flask(__name__)
+app.config['PROPAGATE_EXCEPTIONS'] = True
 
 mysql = MySQL()
 parser = SafeConfigParser()
@@ -32,13 +33,14 @@ def mainpage():
 def submitnote():
   something = str(request.form['keys'])
   #need to store arrays in database
-  data_entry = "{'keys': " + str(request.form['keys']) 
-  data_entry += ", 'times': " + str(request.form['times']) + "}"
-  #need to generate a url/random identifier and store with arrays
   keyed = uniqid()
+  data_entry = something
+  data_entry2 = str(request.form['times'])
+  #need to generate a url/random identifier and store with arrays
+  print data_entry
+  print data_entry2
   try:
-    cursor.execute('INSERT INTO notes VALUES (%s, %s)', (keyed, data_entry))
-  
+    cursor.execute('INSERT INTO notes VALUES (%s, %s, %s)', (keyed, data_entry2, data_entry))  
     mysql_c.commit()
     #redirect to a new page with identifier
     return redirect(url_for('shownote', key=keyed))
@@ -48,15 +50,32 @@ def submitnote():
 
 @app.route('/note/<key>')
 def shownote(key):
-  something = key
+  something = str(key)
   #this method goes to mysql database and pulls data
-  cursor.execute('SELECT data FROM notes WHERE id=(%s)', [key])
+  #get data for time
+  cursor.execute('SELECT times FROM notes WHERE id=(%s)', [something])
   things = cursor.fetchone()
-  things = json.dumps(things)
-  #b = json.loads(str(things[0]))
-  print things
+  time_string = ""
+  if things is not None:
+    things3 = list(things)
+    for item in things3:
+      time_string = str(item)
+      print item
+  else:
+    return "failed"
+  #get data for keys
+  cursor.execute('SELECT k FROM notes WHERE id=(%s)', [key])
+  things2 = cursor.fetchone()
+  key_string = ""
+  if things2 is not None:
+    things4 = list(things2)
+    for item in things4:
+      key_string = str(item)
+      print item
+  else:
+    return "failed"
   #then sends it to javascript to render on page
-  return render_template('submitted.html', name = something)
+  return render_template('submitted.html', name = something, time=time_string, key = key_string)
 
 def uniqid(prefix='', more_entropy=False):
   m = time.time()

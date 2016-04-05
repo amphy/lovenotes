@@ -50,7 +50,7 @@ function stoprecord() {
 }
 
 function preprocess() {
-  var text = JSON.stringify(keystrokes);
+  var text = keystrokes.toString();
   keys.value = text;
 
   for(i = 0; i < time.length-1; i++){
@@ -59,7 +59,7 @@ function preprocess() {
   }
   timings.push(0);
   
-  var text2 = JSON.stringify(timings);
+  var text2 = timings.join(",");
   times.value = text2;
 
   console.log(text2);
