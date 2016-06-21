@@ -46,7 +46,7 @@ def submitnote():
     return redirect(url_for('shownote', key=keyed))
   except:
    mysql_c.rollback()
-   return "failed"
+   return "failed" + str(sys.exc_info()[0])
 
 @app.route('/note/<key>')
 def shownote(key):
@@ -62,7 +62,7 @@ def shownote(key):
       time_string = str(item)
       print item
   else:
-    return "failed"
+    return "failed" + str(sys.exc_info()[0])
   #get data for keys
   cursor.execute('SELECT k FROM notes WHERE id=(%s)', [key])
   things2 = cursor.fetchone()
@@ -73,7 +73,7 @@ def shownote(key):
       key_string = str(item)
       print item
   else:
-    return "failed"
+    return "failed" + str(sys.exc_info()[0])
   #then sends it to javascript to render on page
   return render_template('submitted.html', name = something, time=time_string, key = key_string)
 

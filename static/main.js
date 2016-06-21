@@ -24,29 +24,21 @@ function setup() {
   textarea = document.getElementById("letter");
   textarea.addEventListener("keydown", backspace);
   textarea.addEventListener("keypress", record);
-  textarea.addEventListener("keyup", stoprecord);
 }
 
 function backspace(event) {
+  time.push(Date.now());
   if(event.keyCode == 8) {
-    time.push(Date.now());
+    //time.push(Date.now());
     keystrokes.push(event.keyCode);
-    console.log("backspace");
   }
 }
 
 function record(event) {
   //record start time using Date
-  time.push(Date.now());
+  //time.push(Date.now());
   //store keyCode
   keystrokes.push(event.charCode);
-  console.log(event.charCode);
-}
-
-function stoprecord() {
-  console.log("Time: " + time[keystrokes.length-1]);
-  //timings.push(delta);
-  //startTime = Date.now();
 }
 
 function preprocess() {
